@@ -14,6 +14,7 @@ function CoffeeShop (minCust, maxCust, cupsPerCust, locName) {
   this.dailyCups = 0;
   CoffeeShop.allStores.push(this);
   this.generateHourlyCoffee();
+  this.renderShopRow();
 }
 
 CoffeeShop.prototype.randomCustomer = function(min, max) {
@@ -67,13 +68,38 @@ CoffeeShop.prototype.renderShopRow = function() {
   CoffeeShop.tableDataEl.appendChild(trEl);
 };
 
+CoffeeShop.prototype.renderFooterRow = function() {
+  var trEl = document.createElement('tr');
+  var tdEl = document.createElement('td');
+  tdEl.textContent = 'Hourly Totals: ';
+  trEl.appendChild(tdEl);
+
+  for( var i = 0; i < CoffeeShop.hours.length; i++ ) {
+    var storesHourlyTotals = 0;
+    var td = document.createElement('td');
+
+    for( var j = 0; j < CoffeeShop.allStores.length; j++) {
+      storesHourlyTotals += CoffeeShop.allStores[j].hourlyCupsTotal[i];
+      td.textContent = storesHourlyTotals;
+      trEl.appendChild(td);
+    }
+  }
+
+  var tdElem = document.createElement('td');
+  tdElem.textContent = CoffeeShop.allStoresTotal;
+  trEl.appendChild(tdElem);
+  CoffeeShop.tableDataEl.appendChild(trEl);
+};
+
+
 function initExistingShops() {
-  new CoffeeShop(48, 155, 2.2, 'Pike Place Market').renderShopRow();
-  new CoffeeShop(34, 95, 3.2, 'Capitol Hill').renderShopRow();
-  new CoffeeShop(12, 55, 2.2, 'Seattle Public Library').renderShopRow();
-  new CoffeeShop(47, 105, 1.5, 'South Lake Union').renderShopRow();
-  new CoffeeShop(79, 255, 1.1, 'Sea-Tac Airport').renderShopRow();
-  new CoffeeShop(13, 55, 1.9, 'Website Sales').renderShopRow();
+  new CoffeeShop(48, 155, 2.2, 'Pike Place Market');
+  new CoffeeShop(34, 95, 3.2, 'Capitol Hill');
+  new CoffeeShop(12, 55, 2.2, 'Seattle Public Library');
+  new CoffeeShop(47, 105, 1.5, 'South Lake Union');
+  new CoffeeShop(79, 255, 1.1, 'Sea-Tac Airport');
+  new CoffeeShop(13, 55, 1.9, 'Website Sales');
 }
 
 initExistingShops();
+CoffeeShop.prototype.renderFooterRow();
